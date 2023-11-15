@@ -1,0 +1,29 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./bootstrap.js",
+  "scripts": {
+    "start": "nodemon --ignore 'typings/auto-generated/*' --exec 'ts-node' bootstrap.ts"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@artus/core": "^2.1.1",
+    "@artus/pipeline": "^0.2.3",
+    "@lugu/application": "^1.0.0",
+    "@lugu/application-http": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "@artus/tsconfig": "^1.0.1",
+    "@types/node": "^17.0.31",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

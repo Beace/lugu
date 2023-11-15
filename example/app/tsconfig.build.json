@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "exclude": ["./*.json", "./*.md", "**/*.d.ts"],
+    "include": ["./**/*"],
+    "ts-node": {
+      "files": true
+    },
+    "outDir": "output",
+    "compilerOptions": {
+      "resolveJsonModule": true
+    }
+  }
