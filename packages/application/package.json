@@ -1,11 +1,12 @@
 {
-  "name": "@lugu/application",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@npm-book/application",
+  "version": "0.0.1",
+  "description": "A http framework core for npm-book",
   "main": "./lib/index.js",
   "scripts": {
     "prebuild": "rm -rf ./lib",
-    "build": "tsc -p ./tsconfig.build.json"
+    "build": "tsc -p ./tsconfig.build.json",
+    "publishOnly": "npm run build"
   },
   "files": [
     "lib"
@@ -21,10 +22,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tslib": "^2.4.0",
     "@artus/core": "^2.1.1",
     "@artus/pipeline": "^0.2.3",
-    "reflect-metadata": "^0.1.13"
+    "log4js": "^6.9.1",
+    "reflect-metadata": "^0.1.13",
+    "tslib": "^2.4.0"
   },
   "devDependencies": {
     "@artus/tsconfig": "^1.0.1",

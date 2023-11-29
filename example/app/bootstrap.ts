@@ -1,9 +1,9 @@
 import path from 'path';
-import { MyApplication } from '@lugu/application';
+import { NPMBookApplication } from '@npm-book/application';
 
 
 async function main() {
-  const app = await MyApplication.start({
+  const app = await NPMBookApplication.start({
     root: path.resolve(__dirname, '.'),
     configDir: 'config',
     exclude: [],

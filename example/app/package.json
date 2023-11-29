@@ -14,8 +14,8 @@
   "dependencies": {
     "@artus/core": "^2.1.1",
     "@artus/pipeline": "^0.2.3",
-    "@lugu/application": "^1.0.0",
-    "@lugu/application-http": "^1.0.0",
+    "@npm-book/application": "^0.0.1",
+    "@npm-book/application-http": "^0.0.1",
     "reflect-metadata": "^0.1.13",
     "tslib": "^2.4.0"
   },

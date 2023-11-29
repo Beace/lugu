@@ -1,11 +1,15 @@
 import { Inject } from '@artus/core';
 import {
   GET,
-  Controller
-} from '@lugu/application-http/decorator';
-import { Config } from '@lugu/application';
+  Controller,
+  Query
+} from '@npm-book/application-http/decorator';
+import { Config } from '@npm-book/application';
 
 import HomeService from '../service/home';
+import { Req } from '@npm-book/application';
+import RequestFormatMiddleware from '../middlewares/auth';
+import { HTTPRequest } from '@npm-book/application-http';
 
 @Controller()
 export default class UserController {
@@ -15,11 +19,12 @@ export default class UserController {
   @Config()
   config: Record<string, any>;
 
-  @GET('/')
-  async info(ctx) {
+  @GET('/api', {
+    middlewares: [RequestFormatMiddleware]
+  })
+  async info(@Req() req: HTTPRequest, @Query() query) {
     const user = await this.homeService.say();
-
-    ctx.body = {
+    return {
       config: this.config,
       user,
     };
