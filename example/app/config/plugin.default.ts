@@ -1,6 +1,6 @@
 export default {
   'application-http': {
     enable: true,
-    package: '@lugu/application-http',
+    package: '@npm-book/application-http',
   },
 };

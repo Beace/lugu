@@ -1,14 +1,14 @@
 {
-  "name": "lugu",
+  "name": "npm-book-framework",
   "version": "1.0.0",
   "description": "a framework based on artus.js",
   "main": "lib",
   "scripts": {
-    "build": "npm run build --workspaces --if-present"
+    "build": "npm run build --workspaces --if-present",
+    "dev": "cd example/app && NODE_ENV=dev ARTUS_SERVER_ENV=dev npm start"
   },
   "workspaces": [
-    "packages/*",
-    "example/*"
+    "packages/*"
   ],
   "license": "MIT",
   "devDependencies": {

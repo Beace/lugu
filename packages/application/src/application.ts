@@ -1,18 +1,18 @@
 import { existsSync } from 'fs';
 import path from 'path';
-import { ArtusApplication, Manifest, ArtusScanner } from '@artus/core';
+import { ArtusApplication, Manifest, ArtusScanner, LoggerType } from '@artus/core';
+import MyTrigger from './trigger';
+import { DEFAULT_EXCLUDE_FILES, DEFAULT_EXTENSIONS, transformMiddleware } from './utils';
+import { MiddlewareConstructable, ApplicationOptions } from './types';
+import { NPMBookLogger } from './logger';
 
-interface ApplicationOptions {
-  root?: string;
-  name?: string;
-  configDir?: string;
-  exclude?: string[];
-}
-
-export class MyApplication extends ArtusApplication {
+export class NPMBookApplication extends ArtusApplication {
   public manifest: Manifest;
   public options: ApplicationOptions;
   public env: string;
+  public middlewares: any[] = [];
+  private _logger: NPMBookLogger;
+
 
   constructor(options: ApplicationOptions = {
     root: process.cwd(),
@@ -23,7 +23,21 @@ export class MyApplication extends ArtusApplication {
     super();
     this.options = options;
     this.env = process.env.ARTUS_SERVER_ENV ?? 'default';
+    this._logger = new NPMBookLogger(options.logger);
+    this.container.set({ id: NPMBookLogger, value: this._logger });
     this._init();
+  }
+
+  public get trigger(): MyTrigger {
+    return this.container.get(MyTrigger);
+  }
+
+  public get config() {
+    return super.config;
+  }
+
+  public override get logger(): LoggerType {
+    return this._logger as LoggerType;
   }
 
   private _init() {
@@ -36,7 +50,7 @@ export class MyApplication extends ArtusApplication {
   }
 
   public static async start(options?: ApplicationOptions) {
-    const app = new MyApplication(options);
+    const app = new NPMBookApplication(options);
     const manifestMap = await app.scan();
     await app.load(manifestMap, app.options.root);
     await app.run();
@@ -58,8 +72,8 @@ export class MyApplication extends ArtusApplication {
       configDir: this.options.configDir,
       needWriteFile: false,
       useRelativePath: true,
-      extensions: ['.js', '.json', '.node', '.ts'],
-      exclude: this.options.exclude?.concat(['yarn.lock', 'pnpm-lock.yaml', 'package-lock.json', 'test']),
+      extensions: DEFAULT_EXTENSIONS,
+      exclude: this.options.exclude?.concat(DEFAULT_EXCLUDE_FILES),
       app: this,
     });
     return await scanner.scan(this.options.root!);
@@ -77,8 +91,22 @@ export class MyApplication extends ArtusApplication {
   public loadDefaultClass(): void {
     super.loadDefaultClass()
     this.container.set({
-      id: MyApplication,
+      id: NPMBookApplication,
       value: this,
     });
+    this.container.set({
+      type: MyTrigger,
+    });
+  }
+
+  public use(...middlewares: MiddlewareConstructable[]) {
+    this.useMiddleware(middlewares);
+  }
+
+  private useMiddleware(middlewares: MiddlewareConstructable[]) {
+    for (const mClazz of middlewares) {
+      this.middlewares.push(mClazz);
+      this.trigger.use(transformMiddleware(mClazz));
+    }
   }
 }
